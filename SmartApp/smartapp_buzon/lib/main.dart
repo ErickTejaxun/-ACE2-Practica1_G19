@@ -54,6 +54,11 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
   int _pesoObjeto =0;
   int _estado_buzon = 0;
   int _estado_tanque = 2;
+
+  Icon _iconoEstadoBuzon = Icon(Icons.delete,color: Colors.green,size: 50.0,);
+  Icon _iconoPeso = Icon(Icons.markunread,color: Colors.green,size: 50.0,);
+  Icon _iconoTanque = Icon(Icons.local_car_wash,color: Colors.black,size: 50.0,);
+
   void _actualizar() 
   {
     setState(() 
@@ -65,6 +70,10 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
       print('-----------Peso objeto\t'+_pesoObjeto.toString());
       print('-----------Estado del buzón\t'+_estado_buzon.toString());
       _estado_tanque = estados_variables[2];
+      if(_iconoEstadoBuzon==0)
+      {
+        _iconoEstadoBuzon = Icon(Icons.delete_outline,color: Colors.green,size: 50.0,);
+      }
     });
   }
   
@@ -91,7 +100,14 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
                   (
                     fit: FlexFit.tight,
                     flex: 1,
-                    child: Apartado(colorFondo:Colors.white , widget: Elemento(titulo: Titulo(tamanioFuente: 1, texto:titulos[0]), mensaje: Titulo(tamanioFuente: 2, texto: estado_buzon[_estado_buzon] ) )),
+                    child: Apartado(
+                      colorFondo:Colors.white , 
+                      widget: Elemento(
+                        titulo: Titulo(tamanioFuente: 1, texto:titulos[0]), 
+                        mensaje: Titulo(tamanioFuente: 2, texto: estado_buzon[_estado_buzon]),
+                        icono: _iconoEstadoBuzon,
+                        )
+                    ),
                   ),        
                 ],
               ),
@@ -109,7 +125,14 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
                   (
                     fit: FlexFit.tight,
                     flex: 1,
-                    child: Apartado(colorFondo: Colors.white , widget: Elemento(titulo: Titulo(tamanioFuente: 1, texto:titulos[1]), mensaje: Titulo(tamanioFuente: 2, texto: '$_pesoObjeto Kg.')) ),
+                    child: Apartado(
+                      colorFondo: Colors.white , 
+                      widget: Elemento(
+                        titulo: Titulo(tamanioFuente: 1, texto:titulos[1]), 
+                        mensaje: Titulo(tamanioFuente: 2, texto: '$_pesoObjeto Kg.'),
+                        icono: _iconoPeso,                        
+                      ) 
+                    ),
                   ),        
                 ],
               ),
@@ -127,7 +150,14 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
                   (
                     fit: FlexFit.tight,
                     flex: 1,
-                    child: Apartado(colorFondo:colores_estado_contendores[_estado_tanque] , widget: Elemento(titulo: Titulo(tamanioFuente: 1, texto:titulos[2]), mensaje: Titulo(tamanioFuente: 2, texto: estados_contenedor[estados_variables[2]])) ),
+                    child: Apartado(
+                      colorFondo:colores_estado_contendores[_estado_tanque] , 
+                      widget: Elemento(
+                        titulo: Titulo(tamanioFuente: 1, texto:titulos[2]), 
+                        mensaje: Titulo(tamanioFuente: 2, texto: estados_contenedor[estados_variables[2]]),
+                        icono: _iconoTanque,
+                      ) 
+                    ),
                   ),        
                 ],
               ),          
@@ -247,16 +277,17 @@ class Titulo extends StatelessWidget
 
 class Elemento extends StatelessWidget
 {
-  Elemento({this.titulo,this.mensaje});
+  Elemento({this.titulo,this.mensaje, this.icono});
   final Widget titulo;
-  final Widget mensaje;  
+  final Widget mensaje;
+  final Widget icono;  
 
   @override
   Widget build(BuildContext context) 
   {
     return Column
     (
-      children: [ titulo,mensaje]      
+      children: [ titulo,mensaje, icono]      
     );
   }
 }

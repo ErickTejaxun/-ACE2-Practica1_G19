@@ -74,14 +74,16 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
       _estado_tanque = estados_variables[2];
       if(_iconoEstadoBuzon==0)
       {
-        _iconoEstadoBuzon = Icon(Icons.delete_outline,color: Colors.green,size: 50.0,);
-        _showNotification();
+        _iconoEstadoBuzon = Icon(Icons.delete_outline,color: Colors.green,size: 50.0,);        
       }
       else
       {
         _iconoEstadoBuzon = Icon(Icons.delete,color: Colors.green,size: 50.0,);        
       }
 
+      if(_estado_tanque==0)
+      {
+        _showNotification();      }
     });
   }
 

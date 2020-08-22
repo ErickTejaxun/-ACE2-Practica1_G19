@@ -59,6 +59,8 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
   Icon _iconoPeso = Icon(Icons.markunread,color: Colors.green,size: 50.0,);
   Icon _iconoTanque = Icon(Icons.local_car_wash,color: Colors.black,size: 50.0,);
 
+  var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
   void _actualizar() 
   {
     setState(() 
@@ -73,9 +75,58 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
       if(_iconoEstadoBuzon==0)
       {
         _iconoEstadoBuzon = Icon(Icons.delete_outline,color: Colors.green,size: 50.0,);
+        _showNotification();
       }
+      else
+      {
+        _iconoEstadoBuzon = Icon(Icons.delete,color: Colors.green,size: 50.0,);        
+      }
+
     });
   }
+
+
+  @override
+  initState() {
+    super.initState();
+    // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+    var initializationSettingsAndroid =
+    AndroidInitializationSettings('app_icon');
+    var initializationSettingsIOS = IOSInitializationSettings();
+    var initializationSettings = InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        onSelectNotification: onSelectNotification);
+  }
+
+
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      print('Notification payload: ' + payload);
+    }
+
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SecondScreen(payload)),
+    );
+  }  
+
+
+  Future _showNotification() async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'SmartMailBox', 'WebAPIRest', 'Server as a broker',
+        importance: Importance.Max, priority: Priority.High);
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+
+
+    String trendingNewsId = '5';
+    await flutterLocalNotificationsPlugin.show(
+        0, 'SmartMailBox', 'El tanque del desinfectante está en un nivel muy bajo.', platformChannelSpecifics,
+        payload: trendingNewsId);
+  }  
+
   
   @override 
   Widget build(BuildContext context)
@@ -366,5 +417,49 @@ class _BuzonInformerWidgetState extends State<BuzonInformeWidget>
       ],
     );
 
+  }
+}
+
+
+class SecondScreen extends StatefulWidget {
+  final String payload;
+  SecondScreen(this.payload);
+  @override
+  State<StatefulWidget> createState() => SecondScreenState();
+}
+
+class SecondScreenState extends State<SecondScreen> {
+  String _payload;
+  @override
+  void initState() {
+    super.initState();
+    _payload = widget.payload;
+  }
+
+  var newsList = {
+    1:"Anand Mahindra gets note from 11 year girl to curb noise pollution",
+    2:"26 yr old engineer brings 10 pons back to life",
+    5:"Donald trump says windmill cause cancer."
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Second Screen with payload"),
+      ),
+      body: Center(
+        child: Center(
+          child: Text(
+            newsList[int.parse(_payload)],
+            textDirection: TextDirection.ltr,
+            style: TextStyle(
+              fontSize: 17,
+              color: Colors.black87,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

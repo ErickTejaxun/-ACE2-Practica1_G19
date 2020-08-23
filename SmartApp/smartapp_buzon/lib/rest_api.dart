@@ -45,8 +45,9 @@ class ApiService
       //return json.decode(response.body);      
       //return json.decode(response.body);
       var respuesta = json.decode(response.body);
-      var mensaje = respuesta['message'];
-      var data = respuesta['data']['Items'];
+      print(respuesta);
+      var mensaje = respuesta['message'];      
+      var data = respuesta['Items'];
       var peso = data[0]['llenado'];   
       if(peso!=null)
       {        
@@ -58,7 +59,7 @@ class ApiService
       {        
       }
 
-      print('Estado del tanque\t' +peso );
+      print('Estado del tanque\t' +estados_variables[2].toString() );
       
       return true;
     } 
@@ -100,15 +101,16 @@ class ApiService
     {
       //return json.decode(response.body);
       var respuesta = json.decode(response.body);
+      print(respuesta);
       var mensaje = respuesta['message'];
-      var data = respuesta['data']['Items'];
+      var data = respuesta['Items'];
       var peso = data[0]['peso'];
       if(peso!=null)
       {        
         estados_variables[1] = int.parse(peso);
         estados_variables[0] = 1;                
       }            
-      print('Peso del objeto\t'+peso);            
+      print('Peso del objeto\t'+estados_variables[1].toString());            
     }     
     return estados_variables[1];
   }

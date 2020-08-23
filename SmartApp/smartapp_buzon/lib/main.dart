@@ -15,7 +15,7 @@ var colores = [Colors.green, Colors.blue, Colors.blue];
 var estados_contenedor = ['Bajo: El tanque está casi vacío','Medio: Debajo del 50%','Alto: Mayor del 50%'];
 var colores_estado_contendores= [Colors.red, Colors.yellow, Colors.green];
 var estados_variables = [0,0,0]; //0: Estado del buzón, 1: Peso del objeto, 2: Estado del tanque
-var estado_buzon = ['Vacío', 'Lleno'];
+var estado_buzon = ['Vacío', 'Hay objetos dentro del buzón.'];
 
 
 
@@ -56,7 +56,7 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
   int _estado_tanque = 2;
 
   Icon _iconoEstadoBuzon = Icon(Icons.delete,color: Colors.green,size: 50.0,);
-  Icon _iconoPeso = Icon(Icons.markunread,color: Colors.green,size: 50.0,);
+  Icon _iconoPeso = Icon(Icons.local_mall,color: Colors.green,size: 50.0,);
   Icon _iconoTanque = Icon(Icons.local_car_wash,color: Colors.black,size: 50.0,);
 
   var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -67,7 +67,7 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
     {
       ApiService.getDataBuzon(); 
       ApiService.getDataTanque();
-      _pesoObjeto = estados_variables[0];
+      _pesoObjeto = estados_variables[1];
       _estado_buzon = _pesoObjeto==0? 0:1;
       print('-----------Peso objeto\t'+_pesoObjeto.toString());
       print('-----------Estado del buzón\t'+_estado_buzon.toString());
@@ -182,7 +182,7 @@ class _BuzonBodyStateWidget extends State<BuzonBodyWidget>
                       colorFondo: Colors.white , 
                       widget: Elemento(
                         titulo: Titulo(tamanioFuente: 1, texto:titulos[1]), 
-                        mensaje: Titulo(tamanioFuente: 2, texto: '$_pesoObjeto Kg.'),
+                        mensaje: Titulo(tamanioFuente: 2, texto: '$_pesoObjeto g'),
                         icono: _iconoPeso,                        
                       ) 
                     ),

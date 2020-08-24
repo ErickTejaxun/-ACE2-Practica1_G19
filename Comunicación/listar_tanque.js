@@ -1,27 +1,22 @@
 const AWS = require("aws-sdk")
 const documentClient = new AWS.DynamoDB.DocumentClient();
-exports.handler = async(event) => {
+exports.handler = function(event, ctx, callback) {
     const params = {
-        TableName: "tanque",
+        TableName: "tanque2",
+        ScanIndexForward: "false",
+        Limit: 5,
+        KeyConditionExpression : "#id = :id",
         ExpressionAttributeNames: {
-        "#S": "llenado"},
-        Select: "SPECIFIC_ATTRIBUTES",
-        ProjectionExpression: "#S", 
-        ScanIndexForward: true
+        "#id":"id"},
+        ExpressionAttributeValues : {
+            ':id' : 1
+        }
     };
-    try {
-        const data = await documentClient.scan(params).promise();
-        return {
-            error: false,
-            message: 'lista de llenado',
-            data: data,
-            code: 200
-        };
-    } catch (er) {
-        return {
-            error: true,
-            message: 'Hubo un problema al obtener el llenado',
-            code: 502
-        };
-    }
-};
+    documentClient.query(params, function(err, data){
+        if(err){
+            callback(err, null);
+        }else{
+            callback(null, data);
+        }
+    });
+}

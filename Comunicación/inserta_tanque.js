@@ -4,9 +4,10 @@ const documentClient = new AWS.DynamoDB.DocumentClient();
 exports.handler = async(event) => {
     const {tanque}  = event;
     const params = {
-        TableName: "tanque",
+        TableName: "tanque2",
         Item: {
-            id: new Date().toString(),
+            id: 1,
+            fecha:parseInt((new Date()).toISOString().replace(/[^0-9]/g, "")),
             llenado: tanque
         }
     };

@@ -1,13 +1,15 @@
 const AWS = require("aws-sdk")
-const crypto = require("crypto")
-
+var rightNow = new Date();
+var res = rightNow.toISOString().slice(0,10).replace(/-/g,"");
 const documentClient = new AWS.DynamoDB.DocumentClient();
+
 exports.handler = async(event) => {
     const {peso}  = event;
     const params = {
-        TableName: "buzon",
+        TableName: "buzon3",
         Item: {
-            id: new Date().toString(),
+            id: 1,
+            fecha:parseInt((new Date()).toISOString().replace(/[^0-9]/g, "")),
             peso: peso
         }
     };
@@ -21,7 +23,7 @@ exports.handler = async(event) => {
     } catch (er) {
         return {
             error: false,
-            message: 'Hubo un problema al agregar el peso',
+            message: 'Hubo un problema al agregar el peso' + er,
             code: 502
         };
     }
